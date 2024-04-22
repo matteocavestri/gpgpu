@@ -16,10 +16,15 @@ int main() {
   cl_mem buffer_count, buffer_seeds;
 
   // Inizializzazione OpenCL
-  err = clGetPlatformIDs(1, &platform, NULL);
-  err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
+  clGetPlatformIDs(1, &platform, NULL);
+  clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
   context = clCreateContext(NULL, 1, &device, NULL, NULL, &err);
-  queue = clCreateCommandQueue(context, device, 0, &err);
+
+  // Uso di clCreateCommandQueueWithProperties al posto della versione deprecata
+  const cl_command_queue_properties props[] = {CL_QUEUE_PROPERTIES,
+                                               CL_QUEUE_PROFILING_ENABLE, 0};
+  queue = clCreateCommandQueueWithProperties(context, device, props, &err);
+
   FILE *program_handle = fopen("pi_kernel.cl", "r");
   fseek(program_handle, 0, SEEK_END);
   size_t program_size = ftell(program_handle);
