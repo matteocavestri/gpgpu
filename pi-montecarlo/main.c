@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #define NUM_WORK_ITEMS 1024
-#define NUM_SAMPLES_PER_ITEM 1000
 
 int main() {
   cl_int err;
@@ -14,6 +13,8 @@ int main() {
   cl_program program;
   cl_kernel kernel;
   cl_mem buffer_count, buffer_seeds;
+
+  int NUM_SAMPLES_PER_ITEM = 1000; // Ora è una variabile
 
   // Inizializzazione OpenCL
   clGetPlatformIDs(1, &platform, NULL);
